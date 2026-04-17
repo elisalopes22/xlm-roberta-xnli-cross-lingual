@@ -28,3 +28,19 @@ Evaluated on the official XNLI test split (never seen during training or model s
 - The main driver of the improvement in Exp 4 was training data size (5k → 10k examples), not hyperparameters.
 - The 6.15 pp EN→TR gap is consistent with the expected degradation for a mid-resource, morphologically distant target language fine-tuned with limited data.
 - Qualitative error patterns are discussed in the report (`report/final_report.pdf`, §5).
+
+## Reproducibility note
+
+A second run on an updated Colab environment (different `transformers`/CUDA
+versions, same seed) produced results that match the reported ones within
+noise, confirming the experimental pattern rather than the exact numbers:
+
+| Metric          | Report | Reproduction | Δ        |
+| --------------- | ------ | ------------ | -------- |
+| Exp 4 (mixed)   | 69.92% | 67.87%       | -2.05 pp |
+| Test EN         | 72.36% | 71.78%       | -0.58 pp |
+| Test TR         | 66.21% | 65.55%       | -0.66 pp |
+| EN→TR gap       | 6.15 pp| 6.23 pp      | +0.08 pp |
+
+Exp 4 remained the best configuration and the cross-lingual gap stayed
+essentially unchanged. Small absolute differences are expected.

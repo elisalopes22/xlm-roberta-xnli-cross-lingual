@@ -111,12 +111,16 @@ def build_trainer(
 
     data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
 
-    return Trainer(
+    # transformers >= 5.0 renamed the `tokenizer` kwarg to `processing_class`.
+    trainer_kwargs = dict(
         model=model,
         args=training_args,
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
-        tokenizer=tokenizer,
         data_collator=data_collator,
         compute_metrics=compute_metrics,
     )
+    try:
+        return Trainer(processing_class=tokenizer, **trainer_kwargs)
+    except TypeError:
+        return Trainer(tokenizer=tokenizer, **trainer_kwargs)
